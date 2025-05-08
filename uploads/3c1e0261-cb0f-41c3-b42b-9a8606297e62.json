@@ -1,0 +1,40 @@
+{
+  "transcription": "hello my name is Sreejith sardar I am from Bit",
+  "pauses": {
+    "pauses_per_sentence": 0.0,
+    "total_pauses": 0,
+    "average_pause_duration": 0.0,
+    "max_pause_duration": 0.0
+  },
+  "hesitations": {
+    "total_hesitations": 0,
+    "hesitation_types": {},
+    "hesitations_per_word": 0.0
+  },
+  "speech_rate": {
+    "total_words": 10,
+    "speech_duration_minutes": 0.13724999999999998,
+    "words_per_minute": 72.85974499089254
+  },
+  "pitch": {
+    "pitch_mean": 326.48744525465855,
+    "pitch_std": 214.58971190283833,
+    "pitch_min": 146.41629028320312,
+    "pitch_max": 1432.7626953125
+  },
+  "word_recall": {
+    "potential_recall_issues": 0,
+    "recall_issues_per_sentence": 0.0
+  },
+  "analysis": {
+    "risk_score": 1,
+    "risk_level": "Low",
+    "abnormal_features": [
+      null,
+      null,
+      null,
+      "Slow speech rate",
+      null
+    ]
+  }
+}

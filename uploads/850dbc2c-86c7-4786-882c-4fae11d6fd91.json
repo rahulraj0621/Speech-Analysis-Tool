@@ -1,0 +1,42 @@
+{
+  "transcription": "hello my name is mudana Ganesh",
+  "pauses": {
+    "pauses_per_sentence": 3.0,
+    "total_pauses": 3,
+    "average_pause_duration": 1.1189655932128706,
+    "max_pause_duration": 1.574268834589142
+  },
+  "hesitations": {
+    "total_hesitations": 1,
+    "hesitation_types": {
+      "audio_detected": 1
+    },
+    "hesitations_per_word": 0.16666666666666666,
+    "audio_hesitations": 1
+  },
+  "speech_rate": {
+    "total_words": 6,
+    "speech_duration_minutes": 0.08605,
+    "words_per_minute": 69.72690296339337
+  },
+  "pitch": {
+    "pitch_mean": 793.3821774157849,
+    "pitch_std": 1017.6675462143752,
+    "pitch_min": 149.2225799560547,
+    "pitch_max": 3765.5361328125
+  },
+  "word_recall": {
+    "potential_recall_issues": 0,
+    "recall_issues_per_sentence": 0.0
+  },
+  "analysis": {
+    "risk_score": 3,
+    "risk_level": "Moderate",
+    "abnormal_features": [
+      "High number of pauses (3.0 per sentence)",
+      "Some audio-detected hesitations (1)",
+      "Very slow speech rate (69.7 WPM)"
+    ],
+    "hesitation_score": 1
+  }
+}

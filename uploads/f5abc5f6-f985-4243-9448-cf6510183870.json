@@ -1,0 +1,44 @@
+{
+  "transcription": "hey my name is Rahul you know I am an engineer so that's it",
+  "pauses": {
+    "pauses_per_sentence": 8.0,
+    "total_pauses": 8,
+    "average_pause_duration": 0.5969579310218711,
+    "max_pause_duration": 1.2982386072708654
+  },
+  "hesitations": {
+    "total_hesitations": 6,
+    "hesitation_types": {
+      "you know": 1,
+      "so": 2,
+      "audio_detected": 3
+    },
+    "hesitations_per_word": 0.4,
+    "audio_hesitations": 3
+  },
+  "speech_rate": {
+    "total_words": 15,
+    "speech_duration_minutes": 0.19165000000000001,
+    "words_per_minute": 78.26767545003914
+  },
+  "pitch": {
+    "pitch_mean": 447.9616941873732,
+    "pitch_std": 466.3711506573446,
+    "pitch_min": 152.816650390625,
+    "pitch_max": 3808.431640625
+  },
+  "word_recall": {
+    "potential_recall_issues": 0,
+    "recall_issues_per_sentence": 0.0
+  },
+  "analysis": {
+    "risk_score": 4,
+    "risk_level": "Moderate",
+    "abnormal_features": [
+      "Very high number of pauses (8.0 per sentence)",
+      "Very frequent hesitations (0.40 per word)",
+      "Very slow speech rate (78.3 WPM)"
+    ],
+    "hesitation_score": 2
+  }
+}

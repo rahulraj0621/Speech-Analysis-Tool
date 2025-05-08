@@ -1,0 +1,40 @@
+{
+  "transcription": "hello my name is Ranjeet Sardar",
+  "pauses": {
+    "pauses_per_sentence": 2.0,
+    "total_pauses": 2,
+    "average_pause_duration": 0.8565201588909795,
+    "max_pause_duration": 1.1574596741769994
+  },
+  "hesitations": {
+    "total_hesitations": 1,
+    "hesitation_types": {
+      "audio_detected": 1
+    },
+    "hesitations_per_word": 0.16666666666666666,
+    "audio_hesitations": 1
+  },
+  "speech_rate": {
+    "total_words": 6,
+    "speech_duration_minutes": 0.0544,
+    "words_per_minute": 110.29411764705883
+  },
+  "pitch": {
+    "pitch_mean": 261.9219456665905,
+    "pitch_std": 103.76331465124346,
+    "pitch_min": 146.25686645507812,
+    "pitch_max": 511.6721496582031
+  },
+  "word_recall": {
+    "potential_recall_issues": 0,
+    "recall_issues_per_sentence": 0.0
+  },
+  "analysis": {
+    "risk_score": 1,
+    "risk_level": "Low",
+    "abnormal_features": [
+      "Some audio-detected hesitations (1)"
+    ],
+    "hesitation_score": 1
+  }
+}

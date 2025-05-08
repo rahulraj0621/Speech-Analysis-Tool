@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Analysis Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2ecc71;
+            --secondary-dark: #27ae60;
+            --accent-color: #9b59b6;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --bg-dark: #2c3e50;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --section-gap: 2rem;
+            --card-padding: 2rem;
+        }
+
+        .dark-mode {
+            --primary-color: #4ea6e0;
+            --primary-dark: #3498db;
+            --secondary-color: #4cd97b;
+            --secondary-dark: #2ecc71;
+            --accent-color: #b27acf;
+            --text-primary: #ecf0f1;
+            --text-secondary: #bdc3c7;
+            --bg-light: #34495e;
+            --bg-white: #2c3e50;
+            --bg-dark: #1a252f;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-light);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+        
+        /* Header styles */
+        .header {
+            text-align: center;
+            margin-bottom: var(--section-gap);
+            padding: 1.5rem;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .dark-mode-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color var(--transition-speed);
+        }
+        
+        .dark-mode-toggle:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Upload form styles */
+        .upload-container {
+            background-color: var(--bg-white);
+            padding: var(--card-padding);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: var(--section-gap);
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: background-color var(--transition-speed), transform 0.2s;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .file-input-label:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .file-input-label i {
+            margin-right: 8px;
+        }
+        
+        .file-name {
+            margin-left: 15px;
+            font-style: italic;
+            color: var(--text-secondary);
+            vertical-align: middle;
+            transition: color var(--transition-speed);
+        }
+        
+        input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            padding: 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed), transform 0.2s;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .submit-btn:disabled {
+            background-color: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Loading indicator */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: var(--section-gap);
+            transition: background-color var(--transition-speed);
+        }
+        
+        .loader p {
+            margin-top: 15px;
+            color: var(--text-secondary);
+        }
+        
+        .loader-spinner {
+            border: 5px solid rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Results container */
+        .results-container {
+            display: none;
+            transition: opacity 0.5s ease-in;
+        }
+        
+        .section {
+            background-color: var(--bg-white);
+            padding: var(--card-padding);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: var(--section-gap);
+            transition: background-color var(--transition-speed), transform 0.3s;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .feature-box {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-sm);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            transition: background-color var(--transition-speed);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .feature-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline-block;
+            margin-right: 6px;
+        }
+        
+        .feature-value {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* Risk level indicators */
+        .risk-indicator {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .risk-low {
+            background-color: #2ecc71;
+        }
+        
+        .risk-moderate {
+            background-color: #f39c12;
+        }
+        
+        .risk-high {
+            background-color: #e74c3c;
+        }
+        
+        .risk-unknown {
+            background-color: #95a5a6;
+        }
+        
+        .abnormal-features {
+            list-style-type: none;
+        }
+        
+        .abnormal-features li {
+            padding: 12px 5px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            display: flex;
+            align-items: center;
+        }
+        
+        .abnormal-features li:before {
+            content: "•";
+            color: var(--accent-color);
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        
+        .abnormal-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .transcription {
+            font-style: italic;
+            color: var(--text-secondary);
+            padding: 20px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 20px;
+            position: relative;
+            border-left: 4px solid var(--accent-color);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .transcription:before {
+            content: "\201C"; /* Using Unicode character for left double quotation mark */
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 3rem;
+            color: rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+        
+        .score-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .score-label {
+            width: 170px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .score-bar {
+            flex-grow: 1;
+            height: 14px;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .score-fill {
+            height: 100%;
+            width: 0;
+            transition: width 1s ease-out;
+        }
+        
+        .risk-score-fill {
+            background: linear-gradient(to right, #2ecc71, #f39c12, #e74c3c);
+        }
+        
+        .hesitation-score-fill {
+            background: linear-gradient(to right, #e74c3c, #f39c12, #2ecc71);
+        }
+        
+        .score-value {
+            margin-left: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            width: 60px;
+            text-align: right;
+        }
+        
+        /* Error message */
+        .error-message {
+            display: none;
+            padding: 20px;
+            background-color: #ffebee;
+            color: #c62828;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            font-weight: 500;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            :root {
+                --card-padding: 1.5rem;
+                --section-gap: 1.5rem;
+            }
+            
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .score-label {
+                width: 130px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            :root {
+                --card-padding: 1.2rem;
+                --section-gap: 1.2rem;
+                --border-radius: 10px;
+                --border-radius-sm: 6px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .file-input-label {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+            
+            .file-name {
+                display: block;
+                margin-top: 8px;
+                margin-left: 0;
+                text-align: center;
+            }
+            
+            .submit-btn {
+                max-width: 100%;
+                margin-top: 1.5rem;
+            }
+            
+            .score-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .score-label {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            .score-value {
+                margin-left: 0;
+                margin-top: 8px;
+                width: 100%;
+                text-align: left;
+            }
+        }
+        
+        /* Add tooltip styles to the CSS section */
+        .tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 5px;
+        }
+
+        .tooltip i {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            cursor: help;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: var(--bg-dark);
+            color: white;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.4;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--bg-dark) transparent transparent transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-brain" style="color: var(--accent-color);"></i> Speech Analysis Tool</h1>
+        <p class="description">Upload a WAV file to analyze speech patterns and detect potential cognitive issues</p>
+        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="error-message" id="error-message"></div>
+
+    <div class="upload-container">
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="file-input-container">
+                    <label for="file-input" class="file-input-label">
+                        <i class="fas fa-file-audio"></i> Choose WAV File
+                    </label>
+                    <input type="file" id="file-input" name="file" accept=".wav">
+                </div>
+                <span class="file-name" id="file-name">No file chosen</span>
+            </div>
+            <button type="submit" class="submit-btn" id="submit-btn" disabled>
+                <i class="fas fa-chart-line"></i> Analyze Speech
+            </button>
+        </form>
+    </div>
+
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <p>Analyzing speech patterns... This may take a moment.</p>
+    </div>
+
+    <div class="results-container" id="results-container">
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-pie"></i> Analysis Overview
+            </h2>
+            <div class="transcription" id="transcription"></div>
+            
+            <div class="score-container">
+                <div class="score-label">Risk Score:</div>
+                <div class="score-bar">
+                    <div class="score-fill risk-score-fill" id="risk-score-fill"></div>
+                </div>
+                <div class="score-value" id="risk-score-value"></div>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Risk Level:
+                    <span class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">Indicates the potential level of cognitive issues based on speech patterns. Low means minimal issues, Moderate means some concerns, High means significant issues that may warrant further evaluation.</span>
+                    </span>
+                </span>
+                <span id="risk-level"></span>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-label">Abnormal Features:</div>
+                <ul class="abnormal-features" id="abnormal-features"></ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-comment-dots"></i> Hesitation Analysis
+            </h2>
+            <div class="score-container">
+                <div class="score-label">Hesitation Score:
+                    <span class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">A score from 0-100 measuring fluency of speech, where 100 represents perfect flow with no hesitations and 0 represents frequent hesitations.</span>
+                    </span>
+                </div>
+                <div class="score-bar">
+                    <div class="score-fill hesitation-score-fill" id="hesitation-score-fill"></div>
+                </div>
+                <div class="score-value" id="hesitation-score-value"></div>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Total Hesitations:</span>
+                <span class="feature-value" id="total-hesitations"></span>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Hesitations Per Word:
+                    <span class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">The average number of hesitation markers (like "um", "uh", pauses) per word in the speech sample. Lower values indicate more fluent speech.</span>
+                    </span>
+                </span>
+                <span class="feature-value" id="hesitations-per-word"></span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-hourglass-half"></i> Pause Analysis
+            </h2>
+            <div class="feature-box">
+                <span class="feature-label">Pauses Per Sentence:
+                    <span class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">The average number of pauses detected per sentence. Excessive pausing may indicate word-finding difficulties or processing issues.</span>
+                    </span>
+                </span>
+                <span class="feature-value" id="pauses-per-sentence"></span>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Total Pauses:</span>
+                <span class="feature-value" id="total-pauses"></span>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Average Pause Duration:
+                    <span class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">The average length of pauses in seconds. Longer pauses may indicate greater cognitive effort to formulate speech.</span>
+                    </span>
+                </span>
+                <span class="feature-value" id="avg-pause-duration"></span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-tachometer-alt"></i> Speech Rate
+            </h2>
+            <div class="feature-box">
+                <span class="feature-label">Words Per Minute:
+                    <span class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip-text">The rate of speech measured in words per minute. Normal conversational speech is typically between 120-150 WPM. Significantly lower rates may indicate cognitive or motor speech issues.</span>
+                    </span>
+                </span>
+                <span class="feature-value" id="words-per-minute"></span>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Total Words:</span>
+                <span class="feature-value" id="total-words"></span>
+            </div>
+            
+            <div class="feature-box">
+                <span class="feature-label">Speech Duration:</span>
+                <span class="feature-value" id="speech-duration"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('file-input');
+            const fileName = document.getElementById('file-name');
+            const uploadForm = document.getElementById('upload-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const loader = document.getElementById('loader');
+            const resultsContainer = document.getElementById('results-container');
+            const errorMessage = document.getElementById('error-message');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            
+            // Dark mode toggle
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = darkModeToggle.querySelector('i');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+            
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.querySelector('i').classList.remove('fa-moon');
+                darkModeToggle.querySelector('i').classList.add('fa-sun');
+            }
+            
+            // Update file name display when a file is selected
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    fileName.textContent = this.files[0].name;
+                    submitBtn.disabled = false;
+                } else {
+                    fileName.textContent = 'No file chosen';
+                    submitBtn.disabled = true;
+                }
+            });
+            
+            // Handle form submission
+            uploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Hide any previous error message
+                errorMessage.style.display = 'none';
+                
+                // Hide results and show loader
+                resultsContainer.style.display = 'none';
+                loader.style.display = 'block';
+                
+                // Create FormData object
+                const formData = new FormData(uploadForm);
+                
+                // Send AJAX request
+                fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Unknown error occurred');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide loader
+                    loader.style.display = 'none';
+                    
+                    // Display results
+                    displayResults(data.features);
+                    
+                    // Show results container with animation
+                    resultsContainer.style.opacity = '0';
+                    resultsContainer.style.display = 'block';
+                    setTimeout(() => {
+                        resultsContainer.style.opacity = '1';
+                    }, 10);
+                    
+                    // Scroll to results
+                    resultsContainer.scrollIntoView({ behavior: 'smooth' });
+                })
+                .catch(error => {
+                    // Hide loader
+                    loader.style.display = 'none';
+                    
+                    // Show error message
+                    errorMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
+                    errorMessage.style.display = 'block';
+                    
+                    // Scroll to error message
+                    errorMessage.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Function to display results with animations
+            function displayResults(data) {
+                // Transcription
+                document.getElementById('transcription').textContent = data.transcription;
+                
+                // Risk analysis
+                const riskScore = data.analysis.risk_score;
+                const riskLevel = data.analysis.risk_level;
+                document.getElementById('risk-score-value').textContent = riskScore + '/10';
+                
+                // Set risk score bar width with animation
+                setTimeout(() => {
+                    const riskScorePercentage = (riskScore / 10) * 100;
+                    document.getElementById('risk-score-fill').style.width = riskScorePercentage + '%';
+                }, 100);
+                
+                // Display risk level with appropriate class
+                const riskLevelElement = document.getElementById('risk-level');
+                riskLevelElement.textContent = riskLevel;
+                
+                // Remove any existing risk classes
+                riskLevelElement.classList.remove('risk-low', 'risk-moderate', 'risk-high', 'risk-unknown');
+                
+                // Add appropriate risk class
+                switch(riskLevel.toLowerCase()) {
+                    case 'low':
+                        riskLevelElement.classList.add('risk-indicator', 'risk-low');
+                        break;
+                    case 'moderate':
+                        riskLevelElement.classList.add('risk-indicator', 'risk-moderate');
+                        break;
+                    case 'high':
+                        riskLevelElement.classList.add('risk-indicator', 'risk-high');
+                        break;
+                    default:
+                        riskLevelElement.classList.add('risk-indicator', 'risk-unknown');
+                }
+                
+                // Abnormal features
+                const abnormalFeaturesList = document.getElementById('abnormal-features');
+                abnormalFeaturesList.innerHTML = '';
+                
+                data.analysis.abnormal_features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    abnormalFeaturesList.appendChild(li);
+                });
+                
+                // Hesitation analysis
+                const hesitationsPerWord = data.hesitations.hesitations_per_word;
+                document.getElementById('total-hesitations').textContent = data.hesitations.total_hesitations;
+                document.getElementById('hesitations-per-word').textContent = hesitationsPerWord.toFixed(2);
+                
+                // Calculate hesitation score (0 = many hesitations, 100 = few hesitations)
+                let hesitationScore = 100;
+                if (data.hesitations && "hesitation_score" in data.analysis) {
+                    // If hesitation score is available directly
+                    hesitationScore = Math.max(0, 100 - (data.analysis.hesitation_score * 50));
+                }
+                
+                document.getElementById('hesitation-score-value').textContent = hesitationScore.toFixed(0) + '/100';
+                
+                // Animate hesitation score bar
+                setTimeout(() => {
+                    document.getElementById('hesitation-score-fill').style.width = hesitationScore + '%';
+                }, 400);
+                
+                // Pause analysis
+                document.getElementById('pauses-per-sentence').textContent = data.pauses.pauses_per_sentence.toFixed(2);
+                document.getElementById('total-pauses').textContent = data.pauses.total_pauses;
+                document.getElementById('avg-pause-duration').textContent = data.pauses.average_pause_duration.toFixed(2) + ' seconds';
+                
+                // Speech rate
+                document.getElementById('words-per-minute').textContent = data.speech_rate.words_per_minute.toFixed(1) + ' WPM';
+                document.getElementById('total-words').textContent = data.speech_rate.total_words;
+                document.getElementById('speech-duration').textContent = (data.speech_rate.speech_duration_minutes * 60).toFixed(1) + ' seconds';
+            }
+        });
+    </script>
+</body>
+</html> 
