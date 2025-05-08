@@ -120,7 +120,7 @@ This application analyzes speech patterns from audio recordings to identify pote
 
 ## License
 
-This project is made by Srijit Sardar of B.Tech ECE dept. of BIT MESRA.
+This project is made by Rahul Raj of B.Tech CSE dept. of BIT MESRA.
 
 ## Disclaimer
 
